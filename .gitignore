@@ -1,5 +1,6 @@
 .env
-token.json
 .venv/
 __pycache__/
+*.pyc
 Oauth_cred_chatbot_gmail.json
+token.json
