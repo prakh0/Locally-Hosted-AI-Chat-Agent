@@ -9,30 +9,19 @@ Powered by a locally running **Qwen LLM**, this system generates intelligent, hu
 
 ---
 
-#  Demo
+## Overview
 
-##  WhatsApp Interaction
+This project demonstrates how to build a **real-world AI assistant** that integrates with:
 
-**User:** Hi  
-**Bot:** Hey! How can I help you today?
+- WhatsApp (via Meta Cloud API + Webhooks)
+- Gmail (via Gmail API + OAuth)
+- Local LLM (Qwen via Hugging Face)
 
-**User:** Can you help me with my order?  
-**Bot:** Sure! Could you share your order details?
-
----
-
-## 📧 Gmail Auto-Reply
-*Email:*
-**Subject:** Meeting tomorrow
-
-Hi, are we still on for tomorrow?
-
-**AI Reply:**
-Hi! Yes, we’re on. What time works best for you?
+Unlike typical AI apps, this runs **fully locally** without paid APIs.
 
 ---
 
-# Features
+# KEY Features
 
 - Real-time WhatsApp auto-replies  
 - Automated Gmail responses  
@@ -78,28 +67,49 @@ Hi! Yes, we’re on. What time works best for you?
 
 ---
 
-# Prerequisites
-
-- Python 3.10+  
-- Gmail API credentials (OAuth)  
-- WhatsApp API (Meta Cloud API / Twilio)  
-- ngrok (for local tunneling)  
-
----
-
-# Installation
-
-```bash
+## Setup Guide
+1. Clone Repo
+```
 git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
+cd YOUR_REPO 
+```
+2. Environment Setup
+```
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+3. Configure Environment Variables
+
+Create .env:
+```
+EMAIL=your_email@gmail.com
+OAUTH_CREDENTIALS_FILE=Oauth_cred_chatbot_gmail.json
+VERIFY_TOKEN=your_verify_token
+ACCESS_TOKEN=your_whatsapp_access_token
+PHONE_NUMBER_ID=your_phone_number_id
+```
 
 ---
 
-# Environment Setup
+## API Setup
+1. WhatsApp (Meta Cloud API)
+-Create app → Add WhatsApp
+```Get ACCESS_TOKEN, PHONE_NUMBER_ID```
+-Set webhook:
+```https://your-ngrok-url/webhook```
+- ngrok
+```ngrok config add-authtoken YOUR_TOKEN
+ngrok http 8000
+```
+2. Gmail API
+Enable Gmail API in Google Cloud
+Setup OAuth Consent Screen
+Download credentials JSON
+
+---
+
+## Environment Setup
 
 - Create a .env file:
   ```
@@ -112,44 +122,42 @@ pip install -r requirements.txt
 
   ---
   
-# Running the Application
-
-1. Start FastAPI Server (WhatsApp)
-2. Expose with ngrok
-3. Configure Webhook
-**Set webhook URL:**
+## Running the Application
+-- Running the App
 ```
-https://your-ngrok-url/webhook
+uvicorn main:app --reload
+ngrok http 8000
+python gmail.py
 ```
-# For Email Assistant
-Run Gmail Auto-Reply
-```python gmail.py```
+## Core Components
 
----
-
-# Core Components
-
-## `main.py`
+### [main.py](./app/main.py)
 
 - FastAPI webhook server  
 - Handles WhatsApp events  
 - Routes messages to LLM  
 
-## `gmail.py`
+### [gmail.py](./app/gmail.com)
 
 - Fetches unread emails  
 - Cleans + truncates content  
 - Sends AI-generated replies  
 
-## `model.py`
+### [model.py](./app/model.py)
 
 - Loads Qwen LLM  
 - Maintains session memory  
 - Generates responses using chat templates  
 
+| File      | Responsibility                     |
+|----------|-----------------------------------|
+| main.py  | WhatsApp webhook handler          |
+| gmail.py | Email processing & replies        |
+| model.py | LLM + session memory              |
+
 ---
 
-# Performance Notes
+## Performance Notes
 
 - First run loads model into memory (~5–10 sec)  
 - CPU inference: ~2–4 sec per response  
@@ -157,11 +165,11 @@ Run Gmail Auto-Reply
 
 ---
 
-# Tech Stack
+## Tech Stack
 
 - FastAPI
-- Hugging Face Transformers
-- PyTorch
+- Qwen 0.5B 
+- Flask
 - Gmail API
 - WhatsApp API
 - ngrok
