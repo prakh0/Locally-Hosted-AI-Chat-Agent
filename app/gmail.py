@@ -136,6 +136,6 @@ def auto_reply():
 
 if __name__ == "__main__":
     while True:
-        print("\n🔄 Checking for new emails...")
+        print("\n Checking for new emails...")
         auto_reply()
         time.sleep(20)
