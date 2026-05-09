@@ -1,4 +1,4 @@
-# AI Communication Assistant (WhatsApp + Gmail)
+#Locally Hosted AI Communication Assistant (WhatsApp + Gmail)
 
 An end-to-end AI automation system that **reads, understands, and replies** to messages from:
 
