@@ -131,13 +131,13 @@ python gmail.py
 ```
 ## Core Components
 
-### [main.py](./app/main.py)
+### [main.py](./app/whatsapp.py)
 
 - FastAPI webhook server  
 - Handles WhatsApp events  
 - Routes messages to LLM  
 
-### [gmail.py](./app/gmail.com)
+### [gmail.py](./app/gmail.py)
 
 - Fetches unread emails  
 - Cleans + truncates content  
